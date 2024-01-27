@@ -1,0 +1,31 @@
+{% extends 'base.html' %} {% block content %}
+<div class="w-75 m-auto">
+    <h1 class="text-center pt-3 pb-3">Profile</h1>
+    <a class="btn btn-secondary" href="{% url 'edit_profile' %}">Edit Profile</a>
+
+    <div class="d-flex flex-wrap justify-content-center w-75 m-auto">
+        {% for i in data %}
+        <div class="col-sm-4 p-2 mb-3 mb-sm-0">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{i.title}}</h5>
+                    <h6 class="fw-light">Author: {{i.author.username}}</h6>
+                    <p class="card-text">{{i.content}}</p>
+                    {% for j in i.category.all %}
+                    <span class="badge bg-secondary">{{j.name}}</span> {% endfor %}
+                    <h5 class="text-end">
+                        <a href="{% url 'delete_post' i.id %}">
+                            <iconify-icon icon="fluent:delete-24-filled"></iconify-icon>
+                        </a>
+                        <a href="{% url 'edit_post' i.id %}">
+                            <iconify-icon icon="lucide:file-edit"></iconify-icon>
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<div class="home-section d-flex justify-content-center">
+    <!-- filter section -->
+    <div class="filter-section px-4 py-3" style="background-color: #f8f9fa;">
+        <h6>{{data | length }} result found</h6>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="category" id="{{category.id}}">
+            <label class="form-check-label" for="{{category.id}}">
+                <a class="text-decoration-none text-dark" href="{% url 'homePage' %}">Get All</a>
+            </label>
+        </div>
+        {% for category in categories %}
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="category" id="{{category.id}}">
+            <label class="form-check-label" for="{{category.id}}">
+                <a class="text-decoration-none text-dark" href="{% url 'category_wise_post' category.slug %}">{{category.name}}</a>
+        </label>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- post section -->
+    <div class="d-flex flex-wrap justify-content-center w-75 px-3 m-auto">
+        {% if data|length == 0 %}
+        <img class="w-50" src="{% static 'no_data.jpg' %}" alt="No data found"> {% endif %} {% for posts in data %}
+        <div class="col-sm-4 p-2 mb-3 mb-sm-0">
+            <div class="card">
+                <img style="width: 200px;" src="{{posts.image.url}}" class="card-img-top m-auto p-2" alt="card img">
+                <div class="card-body">
+                    <h5 class="card-title"><a class="text-decoration-none text-dark" href="{% url 'detail_post' posts.id %}">{{posts.title}}</a></h5>
+                    <h6 class="fw-light">Author: {{posts.author.username}}</h6>
+                    <p class="card-text">{{posts.content | truncatewords:10}}</p>
+                    {% for j in posts.category.all %}
+                    <span class="badge bg-secondary">{{j.name}}</span> {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+</div>
+
+{% endblock %}

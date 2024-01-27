@@ -1,0 +1,61 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog Project</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid w-75 m-auto">
+            <a class="navbar-brand" href="{% url 'homePage' %}"><img style="width: 45px;" src="{% static 'logo.png' %}" alt=""></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'homePage' %}">Home</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'add_category' %}">Add Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'add_post' %}">Add Post</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <form class="d-flex gap-3" role="search" method="post">
+                    {% if user.is_authenticated %} {% csrf_token %}
+                    <a href="{% url 'profile' %}" class="btn btn-outline-primary" type="submit">Profile</a>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-danger" type="submit">Logout</a> {% else %}
+                    <a href="{% url 'sign_up' %}" class="btn btn-outline-warning text-dark" type="submit">Sign Up</a>
+                    <a href="{% url 'log_in' %}" class="btn btn-outline-success" type="submit">Login</a> {% endif %}
+                </form>
+                <!-- <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-danger" type="submit">Logout</button>
+                </form> -->
+            </div>
+
+
+        </div>
+    </nav>
+
+    {% for i in messages %}
+    <div class="bg-{{i.tags}}">
+        <p class="text-light text-center">{{i}}</p>
+    </div>
+    {% endfor %} {% block content %} {% endblock %}
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+</body>
+
+</html>
